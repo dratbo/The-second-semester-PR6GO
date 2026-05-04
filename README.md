@@ -264,4 +264,15 @@ Logout сработал, но сразу же автоматически зап�
 
 ---
 
-Можем проверить через Network в коде элемента (я в заранее поставил галочку у Preserve log, чтобы журнал сохранялся) 
+Можем проверить через `Network` в коде элемента (я в заранее поставил галочку у `Preserve log`, чтобы журнал сохранялся) 
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="523" alt="image" src="https://github.com/user-attachments/assets/40386a3f-1e60-438a-9dc7-98b4d6379b56" /></td>
+  </tr>
+</table>
+
+В списке запросов видно:
+```
+GET /logout → статус 302 (редирект) → затем GET /login → статус 302 → GET /profile.
+```
