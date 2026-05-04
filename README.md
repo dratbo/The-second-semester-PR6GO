@@ -155,7 +155,7 @@ func unsafeHello(w http.ResponseWriter, name string) {
   </tr>
 </table>
 
-Вывод:
+Вывод ошибки:
 
 <table cellpadding="10">
   <tr>
@@ -163,3 +163,103 @@ func unsafeHello(w http.ResponseWriter, name string) {
   </tr>
 </table>
 
+### 3.5 Демонстрация XSS-риска
+
+Вставляем `<script>alert('xss')</script>` в `Новое имя`
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="516" alt="image" src="https://github.com/user-attachments/assets/8e15dc14-6929-41f8-bc7c-85cb8ed7953e" /></td>
+  </tr>
+</table>
+
+При безопасной реализации вы должны увидеть сам текст, а не выполнение скрипта. То есть страница не должна запускать alert, а должна отобразить введённую строку как обычное содержимое.
+Именно это и показывает, что шаблон выводит данные безопасно.
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="514" alt="image" src="https://github.com/user-attachments/assets/5cbafcf4-ae71-46f1-9096-031011408913" /></td>
+  </tr>
+</table>
+
+## 4. Что получилось в результате
+
+В ходе практической работы реализовали учебное web-приложение, в котором:
+- используется cookie для хранения идентификатора сессии;
+- cookie настроена безопаснее, чем обычная «голая» cookie;
+- форма защищена CSRF-токеном;
+- сервер проверяет токен перед изменением данных;
+- имя пользователя отображается через шаблон безопасным способом;
+- XSS-угроза разобрана на контрасте между опасным и безопасным подходом.
+
+## 5. Что важно понять по итогам работы
+
+CSRF и XSS — это не «экзотические» угрозы, а очень практические классы уязвимостей.
+CSRF возникает там, где сервер излишне доверяет автоматической отправке cookies браузером.
+XSS возникает там, где приложение излишне доверяет данным, которые потом показывает в HTML.
+Безопасное backend-приложение должно:
+- осторожно использовать cookies;
+- не считать наличие cookie достаточным доказательством намерения пользователя;
+- экранировать пользовательский ввод при выводе в HTML;
+- минимизировать доверие к данным со стороны клиента.
+
+## 6. Доп задание 🧙‍♂️
+
+Вариант 1. Сделать logout
+Добавьте маршрут:
+`GET /logout`
+который очищает session cookie и завершает «сессию» пользователя.
+
+### 6.1 Добавим функцию удаления cookie в internal/auth/cookie.go
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="407" alt="image" src="https://github.com/user-attachments/assets/fb18284f-3da2-47da-b323-a3ba8ba1b0d9" /></td>
+  </tr>
+</table>
+
+### 6.2 Добавим метод Delete в internal/store/store.go
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="259" alt="image" src="https://github.com/user-attachments/assets/b7a6dfeb-7b24-4016-bfb9-8839f9bb8443" /></td>
+  </tr>
+</table>
+
+### 6.3 Добавим обработчик Logout в internal/httpapi/handler.go
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="475" alt="image" src="https://github.com/user-attachments/assets/8dba660c-8e8f-4add-a1b1-569d5906aae3" /></td>
+  </tr>
+</table>
+
+### 6.4 Зарегистрируем маршрут в cmd/server/main.go
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="653" height="199" alt="image" src="https://github.com/user-attachments/assets/79685b75-6ce5-43bd-b8bc-07bdd9a78215" /></td>
+  </tr>
+</table>
+
+### 6.5 Проверка 
+
+Вот профиль с изменённым именем
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="526" alt="image" src="https://github.com/user-attachments/assets/8efd23dc-0253-433a-859e-f19134716f61" /></td>
+  </tr>
+</table>
+
+Переходим по `http://localhost:8080/logout`
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="520" alt="image" src="https://github.com/user-attachments/assets/414f16b3-158e-4405-9950-aff33a92fe43" /></td>
+  </tr>
+</table>
+
+Logout сработал, но сразу же автоматически запустилась новая сессия (На скриншотах видно разное значение csrf_token)
+
+<h3 Можем проверить через Network в коде элемента (я в заранее поставил галочку у Preserve log, чтобы журнал сохранялся) </h3>
