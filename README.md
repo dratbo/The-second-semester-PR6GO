@@ -44,7 +44,7 @@
 
 - установка cookie
 
-```json
+```go
 {
 const SessionCookieName = "session_id"
 
