@@ -45,7 +45,6 @@
 - установка cookie
 
 ```go
-{
 const SessionCookieName = "session_id"
 
 func SetSessionCookie(w http.ResponseWriter, value string) {
@@ -58,7 +57,6 @@ func SetSessionCookie(w http.ResponseWriter, value string) {
         SameSite: http.SameSiteLaxMode,
         MaxAge:   3600,
     })
-}
 }
 ```
 
