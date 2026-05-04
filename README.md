@@ -60,6 +60,57 @@ func SetSessionCookie(w http.ResponseWriter, value string) {
 }
 ```
 
+- генерация CSRF-токена
+
+```go
+func RandomToken(size int) (string, error) {
+    buf := make([]byte, size)
+    if _, err := rand.Read(buf); err != nil {
+        return "", err
+    }
+    return hex.EncodeToString(buf), nil
+}
+```
+
+- проверка CSRF-токена
+
+```go
+tokenFromForm := r.FormValue("csrf_token")
+if tokenFromForm == "" || tokenFromForm != profile.CSRFToken {
+    http.Error(w, "invalid csrf token", http.StatusForbidden)
+    return
+}
+```
+
+- безопасный HTML-шаблон
+
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Приветствие</title>
+</head>
+<body>
+    <h1>Здравствуйте, {{.Name}}!</h1>
+    <p>Это безопасный вывод имени пользователя через шаблон.</p>
+    <p><a href="/profile">Вернуться к профилю</a></p>
+</body>
+</html>
+```
+
+- опасный XSS-пример
+
+```go
+func unsafeHello(w http.ResponseWriter, name string) {
+    html := "<html><body><h1>Здравствуйте, " + name + "!</h1></body></html>"
+    w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    w.Write([]byte(html))
+}
+```
+
+## 3. Результаты проверки
+
 
 
 
