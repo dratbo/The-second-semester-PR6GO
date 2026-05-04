@@ -111,13 +111,55 @@ func unsafeHello(w http.ResponseWriter, name string) {
 
 ## 3. Результаты проверки
 
-
-
-
+### 3.1 Запуск приложения
 
 <table cellpadding="10">
   <tr>
-    <td><img width="974" height="518" alt="image" src="https://github.com/user-attachments/assets/aa5bebb5-0f22-4dab-9533-98fb70640ce5" /></td>
+    <td><img width="974" height="135" alt="image" src="https://github.com/user-attachments/assets/dc05c67a-74bc-4bc0-bc3b-e4cdbec8e634" /></td>
+  </tr>
+</table>
+
+### 3.2 Проверка сценария входа и установки cookie
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="523" alt="image" src="https://github.com/user-attachments/assets/f1aca929-9f52-42d7-a1c2-5ae7ede8fc6a" /></td>
+  </tr>
+</table>
+
+### 3.3 Проверка CSRF-защиты
+
+Меняем имя “Студент” на “Артур”
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="516" alt="image" src="https://github.com/user-attachments/assets/3835f5af-89a3-4641-ae0f-8f7d0eaa8a6c" /></td>
+  </tr>
+</table>
+
+### 3.4 Проверка ошибки CSRF
+
+Удаляем элемент где указан `csrf_token`
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="518" alt="image" src="https://github.com/user-attachments/assets/aab028f7-ade2-47e4-a9bf-4c045db4a334" /></td>
+  </tr>
+</table>
+
+Меняем `Новое имя` на `тест` и нажимаем сохранить
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="518" alt="image" src="https://github.com/user-attachments/assets/9bf1de1d-0a75-4628-a320-7b0416ed7d1b" /></td>
+  </tr>
+</table>
+
+Вывод:
+
+<table cellpadding="10">
+  <tr>
+    <td><img width="974" height="516" alt="image" src="https://github.com/user-attachments/assets/2e5dc913-5b0c-4fc3-ae56-cedb86150f60" /></td>
   </tr>
 </table>
 
